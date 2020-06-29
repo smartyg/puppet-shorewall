@@ -42,14 +42,6 @@ class shorewall (
             require => Package['shorewall'],
         }
 
-        augeas { 'shorewall-default-startup':
-            changes => "set /files/etc/default/shorewall/startup '1'",
-            lens    => 'Shellvars.lns',
-            incl    => '/etc/default/shorewall',
-            require => Package['shorewall'],
-            notify  => Service['shorewall'],
-        }
-
         concat { [
                 '/etc/shorewall/zones',
                 '/etc/shorewall/interfaces',
@@ -237,15 +229,6 @@ class shorewall (
         file { '/etc/shorewall6':
             ensure  => directory,
             require => Package['shorewall6'],
-        }
-
-
-        augeas { 'shorewall6-default-startup':
-            changes => "set /files/etc/default/shorewall6/startup '1'",
-            lens    => 'Shellvars.lns',
-            incl    => '/etc/default/shorewall6',
-            require => Package['shorewall6'],
-            notify  => Service['shorewall6'],
         }
 
         concat { [
