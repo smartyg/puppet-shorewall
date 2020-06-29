@@ -254,6 +254,7 @@ class shorewall (
                 '/etc/shorewall6/policy',
                 '/etc/shorewall6/rules',
                 "/etc/shorewall6/${blacklist_filename}",
+                '/etc/shorewall6/hosts',
                 '/etc/shorewall6/routestopped',
                 '/etc/shorewall6/conntrack',
                 '/etc/shorewall6/stoppedrules',
@@ -308,6 +309,13 @@ class shorewall (
             order   => '00',
             target  => "/etc/shorewall6/${blacklist_filename}",
             source  => "puppet:///modules/shorewall/${blacklist_filename}_header",
+        }
+
+        # ipv6 hosts
+        concat::fragment { 'hosts6-preamble':
+            order   => '00',
+            target  => '/etc/shorewall6/hosts',
+            content => "# This file is managed by puppet\n# Changes will be lost\n",
         }
 
         # ipv6 tunnels
