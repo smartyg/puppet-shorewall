@@ -76,7 +76,7 @@ class shorewall (
         }
 
         concat::fragment { 'shorewall-zones-local':
-            order   => '01',
+            order   => '00',
             target  => '/etc/shorewall/zones',
             content => $default_zone_entry,
         }
@@ -90,7 +90,7 @@ class shorewall (
 
         # ipv4 policy
         concat::fragment { 'policy-preamble':
-            order   => 'a-00',
+            order   => '00',
             target  => '/etc/shorewall/policy',
             content => "# This file is managed by puppet\n# Changes will be lost\n",
         }
@@ -104,21 +104,21 @@ class shorewall (
 
         # ipv4 rules SECTION NEW
         concat::fragment { 'rules-section-new':
-            order   => '01',
+            order   => '00',
             target  => '/etc/shorewall/rules',
             content => template('shorewall/rules-section-new.erb'),
         }
 
         # ipv4 blacklist
         concat::fragment { "${blacklist_filename}-preamble":
-            order   => '01',
+            order   => '00',
             target  => "/etc/shorewall/${blacklist_filename}",
             source  => "puppet:///modules/shorewall/${blacklist_filename}_header",
         }
 
         # ipv4 hosts
         concat::fragment { 'hosts-preamble':
-            order   => '01',
+            order   => '00',
             target  => '/etc/shorewall/hosts',
             content => "# This file is managed by puppet\n# Changes will be lost\n",
         }
@@ -179,7 +179,7 @@ class shorewall (
 
         # ipv4 stoppedrules
         concat::fragment { 'stoppedrules-preamble':
-          order   => '01',
+          order   => '00',
           target  => '/etc/shorewall/stoppedrules',
           content => "# This file is managed by puppet\n# Changes will be lost\n",
         }
@@ -270,7 +270,7 @@ class shorewall (
         }
 
         concat::fragment { 'shorewall6-zones-local':
-            order   => '01',
+            order   => '00',
             target  => '/etc/shorewall6/zones',
             content => $default_zone_entry,
         }
@@ -284,7 +284,7 @@ class shorewall (
 
         # ipv6 policy (default DROP)
         concat::fragment { 'policy6-preamble':
-            order   => 'a-00',
+            order   => '00',
             target  => '/etc/shorewall6/policy',
             content => "# This file is managed by puppet\n# Changes will be lost\n",
         }
@@ -298,7 +298,7 @@ class shorewall (
 
         # ipv6 rules SECTION NEW
         concat::fragment { 'rules6-section-new':
-            order   => '01',
+            order   => '00',
             target  => '/etc/shorewall6/rules',
             content => template('shorewall/rules-section-new.erb'),
         }
