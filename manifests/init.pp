@@ -435,9 +435,11 @@ class shorewall (
         ipv6  => false,
     }
 
-    each ($config_options) |String $option, String $value| {
-        shorewall::config { capitalize($option):
-            value => $value,
+    each ($config_options) |Integer $n, Hash[String, String, 1, 1] $option| {
+        each ($option) |$item| {
+            shorewall::config { capitalize($item[0]):
+                value => $item[1],
+            }
         }
     }
 }
