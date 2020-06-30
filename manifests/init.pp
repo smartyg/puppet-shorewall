@@ -14,7 +14,6 @@ class shorewall (
     $route_filter        = true,
     $default_zone_entry  = "local firewall\n",
     $blacklist           = ["NEW","INVALID","UNTRACKED"],
-    $config_test         = false,
 ) {
 
     include shorewall::defaults
@@ -233,12 +232,6 @@ class shorewall (
             hasrestart => true,
             hasstatus  => true,
         }
-
-        if $config_test {
-          Service['shorewall'] {
-            restart => $service_restart,
-          }
-        }
     }
 
     if $ipv6 {
@@ -385,11 +378,6 @@ class shorewall (
             enable     => true,
             hasrestart => true,
             hasstatus  => true,
-        }
-        if $config_test {
-          Service['shorewall6'] {
-            restart => $service6_restart,
-          }
         }
     }
 
