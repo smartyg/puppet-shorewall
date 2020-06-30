@@ -14,6 +14,7 @@ class shorewall (
     $route_filter        = true,
     $default_zone_entry  = "local firewall\n",
     $blacklist           = ["NEW","INVALID","UNTRACKED"],
+    $purge_config_dir    = true,
 ) {
 
     include shorewall::defaults
@@ -39,6 +40,7 @@ class shorewall (
         file { '/etc/shorewall':
             ensure  => directory,
             require => Package['shorewall'],
+            purge   => $purge_config_dir,
         }
 
         concat { [
@@ -242,6 +244,7 @@ class shorewall (
         file { '/etc/shorewall6':
             ensure  => directory,
             require => Package['shorewall6'],
+            purge   => $purge_config_dir,
         }
 
         concat { [
