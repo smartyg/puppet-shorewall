@@ -25,8 +25,8 @@ class shorewall (
     $blacklist_filename = $::shorewall::defaults::blacklist_filename
     $header_lead = $::shorewall::defaults::header_lead
     $mangle_filename = $::shorewall::defaults::mangle_filename
-    $service_restart = $shorewall::defaults::service_restart
-    $service6_restart = $shorewall::defaults::service6_restart
+    $service_restart = $::shorewall::defaults::service_restart
+    $service6_restart = $::shorewall::defaults::service6_restart
 
     # These anchor are used because both package install and service resource are optional, it's unsure which one is availible.
     anchor { 'shorewall': }
