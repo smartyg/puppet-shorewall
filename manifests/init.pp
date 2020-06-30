@@ -229,6 +229,7 @@ class shorewall (
 
         service { 'shorewall':
             ensure     => running,
+            enable     => true,
             hasrestart => true,
             hasstatus  => true,
         }
@@ -381,6 +382,7 @@ class shorewall (
 
         service { 'shorewall6':
             ensure     => running,
+            enable     => true,
             hasrestart => true,
             hasstatus  => true,
         }
