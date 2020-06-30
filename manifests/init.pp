@@ -1,23 +1,23 @@
 # ex: si ts=4 sw=4 et
 
 class shorewall (
-    Boolean $ipv4                = true,
-    Boolean $ipv6                = true,
-    Boolean $ipv4_tunnels        = false,
-    Boolean $ipv6_tunnels        = false,
-    String $default_policy       = 'REJECT',
-    Boolean $ip_forwarding       = false,
-    Boolean $traffic_control     = false,
-    String $maclist_ttl          = '',
-    String $maclist_disposition  = 'REJECT',
-    Boolean $log_martians        = true,
-    Boolean $route_filter        = true,
-    String $default_zone_entry   = "local firewall\n",
-    Array $blacklist             = ["NEW","INVALID","UNTRACKED"],
-    Boolean $purge_config_dir    = true,
-    Boolean $mange_service       = true,
-    Boolean $manage_package      = true,
-    TypeSettings $config_options = [],
+	Boolean $ipv4                           = true,
+	Boolean $ipv6                           = true,
+	Boolean $ipv4_tunnels                   = false,
+	Boolean $ipv6_tunnels                   = false,
+	String $default_policy                  = 'REJECT',
+	Boolean $ip_forwarding                  = false,
+	Boolean $traffic_control                = false,
+	String $maclist_ttl                     = '',
+	String $maclist_disposition             = 'REJECT',
+	Boolean $log_martians                   = true,
+	Boolean $route_filter                   = true,
+	String $default_zone_entry              = "local firewall\n",
+	Array $blacklist                        = ["NEW","INVALID","UNTRACKED"],
+	Boolean $purge_config_dir               = true,
+	Boolean $manage_service                 = true,
+    Boolean $manage_package                 = true,
+    Shorewall::TypeSettings $config_options = [],
 ) {
 
     include shorewall::defaults
@@ -324,7 +324,7 @@ class shorewall (
         }
 
         if ($default_policy != '') {
-            shorewall::policy { 'policy-default':
+            shorewall::policy { 'policy6-default':
                 source => 'all',
                 dest   => 'all',
                 action => $default_policy,
