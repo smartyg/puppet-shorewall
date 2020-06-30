@@ -8,7 +8,7 @@ define shorewall::config (
     include shorewall
 
     # shorewall options are capitalized
-    $option = capitalize($name) 
+    $option = upcase($name)
 
     if ($ipv4 and $::shorewall::ipv4) {
         concat::fragment { "shorewall-config-${option}":
