@@ -17,6 +17,7 @@ class shorewall (
     $purge_config_dir    = true,
     $mange_service       = true,
     $manage_package      = true,
+    $config_options      = [],
 ) {
 
     include shorewall::defaults
@@ -432,5 +433,11 @@ class shorewall (
     shorewall::config {"ROUTE_FILTER":
         value => $route_filter ? { true => "Yes", false => "No", 'keep' => "Keep" },
         ipv6  => false,
+    }
+
+    each ($config_options) |String $option, String $value| {
+        shorewall::config { capitalize($option):
+            value => $value,
+        }
     }
 }
