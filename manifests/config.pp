@@ -1,7 +1,7 @@
 define shorewall::config (
-    $value,
-    $ipv4          = $::shorewall::ipv4,
-    $ipv6          = $::shorewall::ipv6,
+    String $value,
+    Boolean $ipv4 = $::shorewall::ipv4,
+    Boolean $ipv6 = $::shorewall::ipv6,
 ) {
     include shorewall
 

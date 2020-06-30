@@ -1,13 +1,13 @@
 # ex: si ts=4 sw=4 et
 
 define shorewall::policy (
-    $source,
-    $dest,
-    $action,
-    $order     = '50',
-    $log_level = '-',
-    $ipv4      = $::shorewall::ipv4,
-    $ipv6      = $::shorewall::ipv6,
+    String $source,
+    String $dest,
+    String $action,
+    String $order     = '50',
+    String $log_level = '-',
+    Boolean $ipv4     = $::shorewall::ipv4,
+    Boolean $ipv6     = $::shorewall::ipv6,
 ) {
     validate_re($order, ['^\d+$'], "Valid values for $order must be an integer.")
 
