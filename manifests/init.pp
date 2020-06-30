@@ -95,6 +95,17 @@ class shorewall (
             content => "# This file is managed by puppet\n# Changes will be lost\n",
         }
 
+        if ($default_policy != '') {
+            shorewall::policy { 'policy-default':
+                source => 'all',
+                dest   => 'all',
+                action => $default_policy,
+                order  => '99',
+                ipv4   => true,
+                ipv6   => false,
+            }
+        }
+
         # ipv4 rules
         concat::fragment { 'rules-preamble':
             order   => '00',
@@ -287,6 +298,17 @@ class shorewall (
             order   => '00',
             target  => '/etc/shorewall6/policy',
             content => "# This file is managed by puppet\n# Changes will be lost\n",
+        }
+
+        if ($default_policy != '') {
+            shorewall::policy { 'policy-default':
+                source => 'all',
+                dest   => 'all',
+                action => $default_policy,
+                order  => '99',
+                ipv4   => false,
+                ipv6   => true,
+            }
         }
 
         # ipv6 rules
