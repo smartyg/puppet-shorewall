@@ -43,6 +43,7 @@ class shorewall (
         }
 
         concat { [
+                '/etc/shorewall/shorewall.conf',
                 '/etc/shorewall/zones',
                 '/etc/shorewall/interfaces',
                 '/etc/shorewall/policy',
@@ -58,6 +59,13 @@ class shorewall (
             ]:
             mode   => '0644',
             notify => Service['shorewall'],
+        }
+
+        # shorewall.conf
+        concat::fragment { 'shorewall-preamble':
+            order   => '00',
+            target  => '/etc/shorewall/shorewall.conf',
+            content => "# This file is managed by puppet\n# Edits will be lost\n",
         }
 
         # ipv4 zones
@@ -232,6 +240,7 @@ class shorewall (
         }
 
         concat { [
+                '/etc/shorewall6/shorewall6.conf',
                 '/etc/shorewall6/zones',
                 '/etc/shorewall6/interfaces',
                 '/etc/shorewall6/policy',
@@ -244,6 +253,13 @@ class shorewall (
             ]:
             mode   => '0644',
             notify => Service['shorewall6'],
+        }
+
+        # shorewall6.conf
+        concat::fragment { 'shorewall6-preamble':
+            order   => '00',
+            target  => '/etc/shorewall6/shorewall6.conf',
+            content => "# This file is managed by puppet\n# Edits will be lost\n",
         }
 
         # ipv6 zones
