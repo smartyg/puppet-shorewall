@@ -437,7 +437,7 @@ class shorewall (
 
     each ($config_options) |Integer $n, Hash[String, String, 1, 1] $option| {
         each ($option) |$item| {
-            shorewall::config { capitalize($item[0]):
+            shorewall::config { $item[0]:
                 value => $item[1],
             }
         }

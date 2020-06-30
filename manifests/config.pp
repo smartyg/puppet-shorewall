@@ -7,20 +7,23 @@ define shorewall::config (
 ) {
     include shorewall
 
+    # shorewall options are capitalized
+    $option = capitalize($name) 
+
     if ($ipv4 and $::shorewall::ipv4) {
-        concat::fragment { "shorewall-config-${name}":
+        concat::fragment { "shorewall-config-${option}":
             order   => '01',
             target  => '/etc/shorewall/shorewall.conf',
-            content => "${name} = ${value}\n",
+            content => "${option}=${value}\n",
             before  => Anchor['shorewall'],
         }
     }
 
     if ($ipv6 and $::shorewall::ipv6) {
-        concat::fragment { "shorewall6-config-${name}":
+        concat::fragment { "shorewall6-config-${option}":
             order   => '01',
             target  => '/etc/shorewall6/shorewall6.conf',
-            content => "${name} = ${value}\n",
+            content => "${option}=${value}\n",
             before  => Anchor['shorewall6'],
         }
     }
