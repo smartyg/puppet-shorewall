@@ -15,6 +15,8 @@ class shorewall (
     $default_zone_entry  = "local firewall\n",
     $blacklist           = ["NEW","INVALID","UNTRACKED"],
     $purge_config_dir    = true,
+    $mange_service       = true,
+    $manage_package      = true,
 ) {
 
     include shorewall::defaults
@@ -25,6 +27,10 @@ class shorewall (
     $service_restart = $shorewall::defaults::service_restart
     $service6_restart = $shorewall::defaults::service6_restart
 
+    # These anchor are used because both package install and service resource are optional, it's unsure which one is availible.
+    anchor { 'shorewall': }
+    anchor { 'shorewall6': }
+
     File {
         ensure => present,
         owner  => 'root',
@@ -33,13 +39,19 @@ class shorewall (
     }
 
     if $ipv4 {
-        package { 'shorewall':
-            ensure => latest,
+        if $manage_package {
+            package { 'shorewall':
+                ensure => latest,
+                before => [
+                    File['/etc/shorewall'],
+                    Anchor['shorewall'],
+                ],
+                notify => Anchor['shorewall'],
+            }
         }
 
         file { '/etc/shorewall':
             ensure  => directory,
-            require => Package['shorewall'],
             purge   => $purge_config_dir,
         }
 
@@ -59,7 +71,8 @@ class shorewall (
                 '/etc/shorewall/stoppedrules'
             ]:
             mode   => '0644',
-            notify => Service['shorewall'],
+            before => Anchor['shorewall'],
+            notify => Anchor['shorewall'],
         }
 
         # shorewall.conf
@@ -228,22 +241,33 @@ class shorewall (
             }
         }
 
-        service { 'shorewall':
-            ensure     => running,
-            enable     => true,
-            hasrestart => true,
-            hasstatus  => true,
+        if ($manage_service)
+        {
+            service { 'shorewall':
+                ensure     => running,
+                enable     => true,
+                hasrestart => true,
+                hasstatus  => true,
+                require    => Anchor['shorewall'],
+                subscribe  => Anchor['shorewall'],
+            }
         }
     }
 
     if $ipv6 {
-        package { 'shorewall6':
-            ensure => latest,
+        if $manage_package {
+            package { 'shorewall6':
+                ensure => latest,
+                before => [
+                    File['/etc/shorewall6'],
+                    Anchor['shorewall6'],
+                ],
+                notify => Anchor['shorewall6'],
+            }
         }
 
         file { '/etc/shorewall6':
             ensure  => directory,
-            require => Package['shorewall6'],
             purge   => $purge_config_dir,
         }
 
@@ -260,7 +284,8 @@ class shorewall (
                 '/etc/shorewall6/stoppedrules',
             ]:
             mode   => '0644',
-            notify => Service['shorewall6'],
+            before => Anchor['shorewall6'],
+            notify => Anchor['shorewall6'],
         }
 
         # shorewall6.conf
@@ -376,11 +401,16 @@ class shorewall (
           content => "# This file is managed by puppet\n# Changes will be lost\n",
         }
 
-        service { 'shorewall6':
-            ensure     => running,
-            enable     => true,
-            hasrestart => true,
-            hasstatus  => true,
+        if ($manage_service)
+        {
+            service { 'shorewall6':
+                ensure     => running,
+                enable     => true,
+                hasrestart => true,
+                hasstatus  => true,
+                require    => Anchor['shorewall6'],
+                subscribe  => Anchor['shorewall6'],
+            }
         }
     }
 
