@@ -1,3 +1,5 @@
+# vim: set tw=2 sw=2 et
+
 define shorewall::config (
     String $value,
     Boolean $ipv4 = $::shorewall::ipv4,
@@ -9,7 +11,7 @@ define shorewall::config (
         concat::fragment { "shorewall-config-${name}":
             order   => '01',
             target  => '/etc/shorewall/shorewall.conf',
-            content => "${name} = ${value}",
+            content => "${name} = ${value}\n",
             before  => Anchor['shorewall'],
         }
     }
@@ -18,7 +20,7 @@ define shorewall::config (
         concat::fragment { "shorewall6-config-${name}":
             order   => '01',
             target  => '/etc/shorewall6/shorewall6.conf',
-            content => "${name} = ${value}",
+            content => "${name} = ${value}\n",
             before  => Anchor['shorewall6'],
         }
     }
