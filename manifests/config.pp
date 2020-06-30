@@ -10,6 +10,7 @@ define shorewall::config (
             order   => '01',
             target  => '/etc/shorewall/shorewall.conf',
             content => "${name} = ${value}",
+            before  => Anchor['shorewall'],
         }
     }
 
@@ -18,6 +19,7 @@ define shorewall::config (
             order   => '01',
             target  => '/etc/shorewall6/shorewall6.conf',
             content => "${name} = ${value}",
+            before  => Anchor['shorewall6'],
         }
     }
 }
