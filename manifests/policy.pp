@@ -9,9 +9,11 @@ define shorewall::policy (
     Boolean $ipv4     = $::shorewall::ipv4,
     Boolean $ipv6     = $::shorewall::ipv6,
 ) {
+    include shorewall
+
     validate_re($order, ['^\d+$'], "Valid values for $order must be an integer.")
 
-    if $ipv4 {
+    if ($ipv4 and $::shorewall::ipv4) {
         concat::fragment { "policy-ipv4-${action}-${source}-to-${dest}":
             order   => $order,
             target  => '/etc/shorewall/policy',
@@ -19,7 +21,7 @@ define shorewall::policy (
         }
     }
 
-    if $ipv6 {
+    if ($ipv6 and $::shorewall::ipv6) {
         concat::fragment { "policy-ipv6-${action}-${source}-to-${dest}":
             order   => $order,
             target  => '/etc/shorewall6/policy',
