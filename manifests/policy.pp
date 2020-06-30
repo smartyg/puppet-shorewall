@@ -1,31 +1,31 @@
-# ex: si ts=4 sw=4 et
+# vim: set tw=2 sw=2 et
 
 define shorewall::policy (
-    String $source,
-    String $dest,
-    String $action,
-    String $order     = '50',
-    String $log_level = '-',
-    Boolean $ipv4     = $::shorewall::ipv4,
-    Boolean $ipv6     = $::shorewall::ipv6,
+  String $source,
+  String $dest,
+  String $action,
+  String $order     = '50',
+  String $log_level = '-',
+  Boolean $ipv4     = $::shorewall::ipv4,
+  Boolean $ipv6     = $::shorewall::ipv6,
 ) {
-    include shorewall
+  include shorewall
 
-    validate_re($order, ['^\d+$'], "Valid values for $order must be an integer.")
+  validate_re($order, ['^\d+$'], "Valid values for $order must be an integer.")
 
-    if ($ipv4 and $::shorewall::ipv4) {
-        concat::fragment { "policy-ipv4-${action}-${source}-to-${dest}":
-            order   => $order,
-            target  => '/etc/shorewall/policy',
-            content => "${source} ${dest} ${action} ${log_level}\n",
-        }
+  if ($ipv4 and $::shorewall::ipv4) {
+    concat::fragment { "policy-ipv4-${action}-${source}-to-${dest}":
+      order   => $order,
+      target  => '/etc/shorewall/policy',
+      content => "${source} ${dest} ${action} ${log_level}\n",
     }
+  }
 
-    if ($ipv6 and $::shorewall::ipv6) {
-        concat::fragment { "policy-ipv6-${action}-${source}-to-${dest}":
-            order   => $order,
-            target  => '/etc/shorewall6/policy',
-            content => "${source} ${dest} ${action} ${log_level}\n",
-        }
+  if ($ipv6 and $::shorewall::ipv6) {
+    concat::fragment { "policy-ipv6-${action}-${source}-to-${dest}":
+      order   => $order,
+      target  => '/etc/shorewall6/policy',
+      content => "${source} ${dest} ${action} ${log_level}\n",
     }
+  }
 }
