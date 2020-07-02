@@ -248,7 +248,7 @@ class shorewall (
     each($interfaces) |Shorewall::TypeInterfaceInternal $item| {
       if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all')
       {
-        shorewall::interface { "iface-ipv4-${item['interface']}":
+        shorewall::iface { "iface-ipv4-${item['interface']}":
           interface => $item['interface'],
           zone      => $item['zone'],
           proto     => 'ipv4',
@@ -278,7 +278,7 @@ class shorewall (
     each($policies) |Integer $n, Shorewall::TypePolicyInternal $item| {
       $policy_ipv4_order = 10 + $n
       if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all') {
-        shorewall::policies { "policy-ipv4-${item['source']}-${item['destination']}":
+        shorewall::policy { "policy-ipv4-${item['source']}-${item['destination']}":
           source    => $item['source'],
           dest      => $item['destination'],
           action    => $item['action'],
@@ -482,7 +482,7 @@ class shorewall (
     each($interfaces) |Shorewall::TypeInterfaceInternal $item| {
       if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all')
       {
-        shorewall::interface { "iface-ipv6-${item['interface']}":
+        shorewall::iface { "iface-ipv6-${item['interface']}":
           interface => $item['interface'],
           zone      => $item['zone'],
           proto     => 'ipv6',
@@ -512,7 +512,7 @@ class shorewall (
     each($policies) |Integer $n, Shorewall::TypePolicyInternal $item| {
       $policy_ipv6_order = 10 + $n
       if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all') {
-        shorewall::policies { "policy-ipv6-${item['source']}-${item['destination']}":
+        shorewall::policy { "policy-ipv6-${item['source']}-${item['destination']}":
           source    => $item['source'],
           dest      => $item['destination'],
           action    => $item['action'],
