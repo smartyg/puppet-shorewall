@@ -257,14 +257,14 @@ class shorewall (
       }
     }
 
-    each($zones) |Shorewall::TypeZonesInternal $item| {
+    each($zones) |Shorewall::TypeZoneInternal $item| {
       if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all') {
         shorewall::zone { "zone-ipv4-${item['zone']}":
           zone => $item['zone'],
           type => 'ipv4',
         }
 
-        if ($zones_have_hosts and is_a($item, Shorewall::TypeZonesHostsInternal)) {
+        if ($zones_have_hosts and is_a($item, Shorewall::TypeZoneHostInternal)) {
           shorewall::host { "host-ipv4-${item['zone']}":
             zone      => $item['zone'],
             interface => $item['interface'],
@@ -290,10 +290,10 @@ class shorewall (
       }
     }
 
-    each($rules) |Integer $n, Shorewall::TypeRulesInternal $item| {
+    each($rules) |Integer $n, Shorewall::TypeRuleInternal $item| {
       $rule_ipv4_order = 10 + $n
       if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all') {
-        if is_a($item, Shorewall::TypeRulesAplicationInternal) {
+        if is_a($item, Shorewall::TypeRuleAplicationInternal) {
           shorewall::rules { "rule-ipv4-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
             source       => $item['source'],
             dest         => $item['destination'],
@@ -304,7 +304,7 @@ class shorewall (
             order        => String($rule_ipv4_order),
           }
         }
-        elsif is_a($item, Shorewall::TypeRulesPortInternal) {
+        elsif is_a($item, Shorewall::TypeRulePortInternal) {
           shorewall::rules { "rule-ipv4-${item['source']}-${item['destination']}-${item['application']}":
             source => $item['source'],
             dest   => $item['destination'],
@@ -491,14 +491,14 @@ class shorewall (
       }
     }
 
-    each($zones) |Shorewall::TypeZonesInternal $item| {
+    each($zones) |Shorewall::TypeZoneInternal $item| {
       if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all') {
         shorewall::zone { "zone-ipv6-${item['zone']}":
           zone => $item['zone'],
           type => 'ipv6',
         }
 
-        if ($zones_have_hosts and is_a($item, Shorewall::TypeZonesHostsInternal)) {
+        if ($zones_have_hosts and is_a($item, Shorewall::TypeZoneHostInternal)) {
           shorewall::host { "host-ipv6-${item['zone']}":
             zone      => $item['zone'],
             interface => $item['interface'],
@@ -524,10 +524,10 @@ class shorewall (
       }
     }
 
-    each($rules) |Integer $n, Shorewall::TypeRulesInternal $item| {
+    each($rules) |Integer $n, Shorewall::TypeRuleInternal $item| {
       $rule_ipv6_order = 10 + $n
       if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all') {
-        if is_a($item, Shorewall::TypeRulesAplicationInternal) {
+        if is_a($item, Shorewall::TypeRuleAplicationInternal) {
           shorewall::rules { "rule-ipv6-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
             source       => $item['source'],
             dest         => $item['destination'],
@@ -538,7 +538,7 @@ class shorewall (
             order        => String($rule_ipv6_order),
           }
         }
-        elsif is_a($item, Shorewall::TypeRulesPortInternal) {
+        elsif is_a($item, Shorewall::TypeRulePortInternal) {
           shorewall::rules { "rule-ipv6-${item['source']}-${item['destination']}-${item['application']}":
             source => $item['source'],
             dest   => $item['destination'],
