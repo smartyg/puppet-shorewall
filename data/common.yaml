@@ -1,4 +1,15 @@
----
+lookup_options:
+  shorewall::config_options:
+    merge: hash
+  shorewall::interfaces:
+    merge: hash
+  shorewall::zones:
+    merge: hash
+  shorewall::policies:
+    merge: hash
+  shorewall::rules:
+    merge: hash
+
 shorewall::defaults::blacklist_filename: 'blrules'
 shorewall::defaults::header_lead: '?'
 shorewall::defaults::mangle_filename: 'mangle'
