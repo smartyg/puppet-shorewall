@@ -71,7 +71,6 @@ class shorewall (
       '/etc/shorewall/proxyarp',
       '/etc/shorewall/hosts',
       "/etc/shorewall/${mangle_filename}",
-      '/etc/shorewall/routestopped',
       '/etc/shorewall/conntrack',
       '/etc/shorewall/stoppedrules'
     ]:
@@ -179,13 +178,6 @@ class shorewall (
     concat::fragment { "${mangle_filename}-preamble":
       order   => '00',
       target  => "/etc/shorewall/${mangle_filename}",
-      content => "# This file is managed by puppet\n# Changes will be lost\n",
-    }
-
-    # ipv4 routestopped
-    concat::fragment { 'routestopped-preamble':
-      order   => '00',
-      target  => '/etc/shorewall/routestopped',
       content => "# This file is managed by puppet\n# Changes will be lost\n",
     }
 
