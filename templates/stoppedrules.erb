@@ -1,8 +1,0 @@
-<%-
-@dest_ports << '-' if @dest_ports.empty? unless @source_ports.empty?
-@proto = '-' if @proto.empty? unless @dest_ports.empty?
-@dest << '-' if @dest.empty? unless @proto.empty?
-@source << '-' if @source.empty? unless @dest.empty?
--%>
-<%= @action %> <%= @source %> <%= @dest %> <%= @proto %> <%= @dest_ports.join(',') %> <%= @source_ports.join(',') %>
-
