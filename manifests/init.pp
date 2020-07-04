@@ -67,7 +67,6 @@ class shorewall (
       '/etc/shorewall/policy',
       '/etc/shorewall/rules',
       "/etc/shorewall/${blacklist_filename}",
-      '/etc/shorewall/masq',
       '/etc/shorewall/proxyarp',
       '/etc/shorewall/hosts',
       "/etc/shorewall/${mangle_filename}",
