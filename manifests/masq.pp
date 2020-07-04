@@ -3,6 +3,7 @@
 define shorewall::masq (
     $sources,
 ) {
+    include shorewall::masqsetup
 
     concat::fragment { "masq-${name}":
         order   => '50',

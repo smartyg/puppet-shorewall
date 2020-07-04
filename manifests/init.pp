@@ -67,11 +67,10 @@ class shorewall (
       '/etc/shorewall/policy',
       '/etc/shorewall/rules',
       "/etc/shorewall/${blacklist_filename}",
-      '/etc/shorewall/masq',
       '/etc/shorewall/proxyarp',
       '/etc/shorewall/hosts',
       "/etc/shorewall/${mangle_filename}",
-      '/etc/shorewall/routestopped',
+      '/etc/shorewall/stoppedrules',
       '/etc/shorewall/conntrack',
       '/etc/shorewall/stoppedrules'
     ]:
@@ -161,13 +160,6 @@ class shorewall (
       }
     }
 
-    # ipv4 masquerading
-    concat::fragment { 'masq-preamble':
-      order   => '00',
-      target  => '/etc/shorewall/masq',
-      content => "# This file is managed by puppet\n# Changes will be lost\n",
-    }
-
     # ipv4 proxyarp
     concat::fragment { 'proxyarp-preamble':
       order   => '00',
@@ -182,10 +174,10 @@ class shorewall (
       content => "# This file is managed by puppet\n# Changes will be lost\n",
     }
 
-    # ipv4 routestopped
-    concat::fragment { 'routestopped-preamble':
+    # ipv4 stoppedrules
+    concat::fragment { 'stoppedrules-preamble':
       order   => '00',
-      target  => '/etc/shorewall/routestopped',
+      target  => '/etc/shorewall/stoppedrules',
       content => "# This file is managed by puppet\n# Changes will be lost\n",
     }
 
