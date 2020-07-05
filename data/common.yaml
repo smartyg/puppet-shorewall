@@ -1,14 +1,14 @@
 lookup_options:
   shorewall::config_options:
-    merge: hash
+    merge: unique
   shorewall::interfaces:
-    merge: hash
+    merge: unique
   shorewall::zones:
-    merge: hash
+    merge: unique
   shorewall::policies:
-    merge: hash
+    merge: unique
   shorewall::rules:
-    merge: hash
+    merge: unique
 
 shorewall::defaults::blacklist_filename: 'blrules'
 shorewall::defaults::header_lead: '?'

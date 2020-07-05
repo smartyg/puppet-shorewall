@@ -278,7 +278,7 @@ class shorewall (
       $rule_ipv4_order = 10 + $n
       if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all') {
         if is_a($item, Shorewall::TypeRuleAplicationInternal) {
-          shorewall::rule { "rule-ipv4-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
+          shorewall::rule { "rule-ipv4-${item['source']}-${item['destination']}-${item['application']}":
             source       => $item['source'],
             dest         => $item['destination'],
             application  => $item['application'],
@@ -289,7 +289,7 @@ class shorewall (
           }
         }
         elsif is_a($item, Shorewall::TypeRulePortInternal) {
-          shorewall::rule { "rule-ipv4-${item['source']}-${item['destination']}-${item['application']}":
+          shorewall::rule { "rule-ipv4-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
             source => $item['source'],
             dest   => $item['destination'],
             proto  => $item['proto'],
@@ -512,7 +512,7 @@ class shorewall (
       $rule_ipv6_order = 10 + $n
       if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all') {
         if is_a($item, Shorewall::TypeRuleAplicationInternal) {
-          shorewall::rule { "rule-ipv6-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
+          shorewall::rule { "rule-ipv6-${item['source']}-${item['destination']}-${item['application]}":
             source       => $item['source'],
             dest         => $item['destination'],
             application  => $item['application'],
@@ -523,7 +523,7 @@ class shorewall (
           }
         }
         elsif is_a($item, Shorewall::TypeRulePortInternal) {
-          shorewall::rule { "rule-ipv6-${item['source']}-${item['destination']}-${item['application']}":
+          shorewall::rule { "rule-ipv6-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
             source => $item['source'],
             dest   => $item['destination'],
             proto  => $item['proto'],
