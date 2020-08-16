@@ -20,6 +20,7 @@ define shorewall::zone (
     }
 
     if (($protocol == 'ipv4' or $protocol == 'all') and $::shorewall::ipv4) {
+      $type = 'ipv4'
       concat::fragment { "zone-ipv4-${name}":
         order   => $order,
         target  => '/etc/shorewall/zones',
@@ -27,6 +28,7 @@ define shorewall::zone (
       }
     }
     if (($protocol == 'ipv6' or $protocol == 'all') and $::shorewall::ipv6) {
+      $type = 'ipv6'
       concat::fragment { "zone-ipv6-${name}":
         order   => $order,
         target  => '/etc/shorewall6/zones',
