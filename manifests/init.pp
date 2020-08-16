@@ -11,7 +11,7 @@ class shorewall (
   String $maclist_ttl                     = '',
   String $maclist_disposition             = 'REJECT',
   Boolean $log_martians                   = true,
-  Boolean $route_filter                   = true,
+  Enum[true, false, 'keep'] $route_filter = true,
   String $default_zone_entry              = "local firewall\n",
   Array $blacklist                        = ["NEW","INVALID","UNTRACKED"],
   Boolean $purge_config_dir               = true,
@@ -380,23 +380,23 @@ class shorewall (
     }
   }
 
-  shorewall::config {"IP_FORWARDING":
+  shorewall::config { 'IP_FORWARDING':
     value => $ip_forwarding ? { true => "Yes", false => "No", 'keep' => "Keep" },
   }
-  shorewall::config {"LOG_MARTIANS":
+  shorewall::config { 'LOG_MARTIANS':
     value => $log_martians ? { true => "Yes", false => "No", 'keep' => "Keep" },
   }
-  shorewall::config {"MACLIST_TTL":
+  shorewall::config { 'MACLIST_TTL':
     value => $maclist_ttl,
   }
-  shorewall::config {"MACLIST_DISPOSITION":
+  shorewall::config { 'MACLIST_DISPOSITION':
     value => $maclist_disposition,
   }
-  shorewall::config {"TC_ENABLED":
+  shorewall::config { 'TC_ENABLED':
     value => $traffic_control ? { true => "Simple", false => "Internal" },
   }
-  shorewall::config {"ROUTE_FILTER":
-    value => $route_filter ? { true => "Yes", false => "No", 'keep' => "Keep" },
+  shorewall::config { 'ROUTE_FILTER':
+    value => $route_filter ? { true => 'Yes', false => 'No', 'keep' => 'Keep' },
     ipv6  => false,
   }
 
