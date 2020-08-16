@@ -12,7 +12,7 @@ class shorewall (
   String $maclist_disposition                  = 'REJECT',
   Boolean $log_martians                        = true,
   Variant[Boolean, Enum['keep']] $route_filter = true,
-  String $default_zone_entry                   = "local firewall\n",
+  String $default_zone_entry                   = "fw firewall\n",
   Array $blacklist                             = ["NEW","INVALID","UNTRACKED"],
   Boolean $purge_config_dir                    = true,
   Boolean $manage_service                      = true,
@@ -93,7 +93,7 @@ class shorewall (
     }
 
     concat::fragment { 'shorewall-zones-local':
-      order   => '00',
+      order   => '01',
       target  => '/etc/shorewall/zones',
       content => $default_zone_entry,
     }
@@ -280,7 +280,7 @@ class shorewall (
     }
 
     concat::fragment { 'shorewall6-zones-local':
-      order   => '00',
+      order   => '01',
       target  => '/etc/shorewall6/zones',
       content => $default_zone_entry,
     }
