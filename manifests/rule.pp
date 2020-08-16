@@ -7,7 +7,7 @@ define shorewall::rule (
     $sport         = '',
     $original_dest = '',
     $source,
-    $dest,
+    $destination,
     $action,
 	Shorewall::TypeInetProtocol $protocol = 'all',
     $order         = '50',

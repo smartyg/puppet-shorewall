@@ -1,28 +1,28 @@
 # vim: set tw=2 sw=2 et
 
 class shorewall (
-  Boolean $ipv4                           = true,
-  Boolean $ipv6                           = true,
-  Boolean $ipv4_tunnels                   = false,
-  Boolean $ipv6_tunnels                   = false,
-  String $default_policy                  = 'REJECT',
-  Boolean $ip_forwarding                  = false,
-  Boolean $traffic_control                = false,
-  String $maclist_ttl                     = '',
-  String $maclist_disposition             = 'REJECT',
-  Boolean $log_martians                   = true,
-  Enum[true, false, 'keep'] $route_filter = true,
-  String $default_zone_entry              = "local firewall\n",
-  Array $blacklist                        = ["NEW","INVALID","UNTRACKED"],
-  Boolean $purge_config_dir               = true,
-  Boolean $manage_service                 = true,
-  Boolean $manage_package                 = true,
-  Shorewall::TypeSettings $config_options = [],
-  Shorewall::TypeInterfaces $interfaces   = [],
-  Shorewall::TypeZones $zones             = [],
-  Shorewall::TypePolicies $policies       = [],
-  Shorewall::TypeRules $rules             = [],
-  Boolean $zones_have_hosts               = true,
+  Boolean $ipv4                                = true,
+  Boolean $ipv6                                = true,
+  Boolean $ipv4_tunnels                        = false,
+  Boolean $ipv6_tunnels                        = false,
+  String $default_policy                       = 'REJECT',
+  Boolean $ip_forwarding                       = false,
+  Boolean $traffic_control                     = false,
+  String $maclist_ttl                          = '',
+  String $maclist_disposition                  = 'REJECT',
+  Boolean $log_martians                        = true,
+  Variant[Boolean, Enum['keep']] $route_filter = true,
+  String $default_zone_entry                   = "local firewall\n",
+  Array $blacklist                             = ["NEW","INVALID","UNTRACKED"],
+  Boolean $purge_config_dir                    = true,
+  Boolean $manage_service                      = true,
+  Boolean $manage_package                      = true,
+  Shorewall::TypeSettings $config_options      = [],
+  Shorewall::TypeInterfaces $interfaces        = [],
+  Shorewall::TypeZones $zones                  = [],
+  Shorewall::TypePolicies $policies            = [],
+  Shorewall::TypeRules $rules                  = [],
+  Boolean $zones_have_hosts                    = true,
 ) {
   include shorewall::defaults
 
@@ -416,11 +416,11 @@ class shorewall (
 
   if ($default_policy != '') {
     shorewall::policy { 'policy-all-default':
-      source   => 'all',
-      dest     => 'all',
-      action   => $default_policy,
-      order    => '99',
-      protocol => 'all',
+      source      => 'all',
+      destination => 'all',
+      action      => $default_policy,
+      order       => '99',
+      protocol    => 'all',
     }
   }
 
@@ -435,8 +435,8 @@ class shorewall (
 
   each($zones) |Shorewall::TypeZoneInternal $item| {
     shorewall::zone { "zone-${item['protocol']}-${item['zone']}":
-      zone => $item['zone'],
-      protocol  => $item['protocol'],
+      zone     => $item['zone'],
+      protocol => $item['protocol'],
     }
 
     if is_a($item, Shorewall::TypeZoneHostInternal) {

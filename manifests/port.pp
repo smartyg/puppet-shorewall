@@ -15,10 +15,9 @@ define shorewall::port (
         proto       => $proto,
         port        => $port,
         source      => $source,
-        dest        => '$FW',
+        destination => '$FW',
         action      => $action,
         order       => $order,
-        ipv4        => $ipv4,
-        ipv6        => $ipv6,
+        protocol    => 'all',
     }
 }

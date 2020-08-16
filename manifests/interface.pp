@@ -1,13 +1,13 @@
 # ex: si ts=4 sw=4 et
 
 define shorewall::interface (
-	Shorewall::TypeInetProtocol $protocol = 'ipv4',
+    Shorewall::TypeInetProtocol $protocol = 'ipv4',
     String $interface      = '',
     Array[String] $options = [],
-	String $zone,
-	String $type           = 'External',
-	String $in_bandwidth   = '-',
-	String $out_bandwidth  = false,
+    String $zone,
+    String $type           = 'External',
+    $in_bandwidth          = '-',
+    $out_bandwidth         = false,
 ) {
   if defined(Class['shorewall']) {
     include shorewall

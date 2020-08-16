@@ -33,7 +33,7 @@ define shorewall::zone (
         content => template('shorewall/zone.erb'),
       }
     }
-    if $interface != undef and $address != undef {
+    if $interface != undef and $addresses != undef {
       shorewall::host { "host-${protocol}-${zone}-${interface}":
         zone      => $zone,
         interface => $interface,

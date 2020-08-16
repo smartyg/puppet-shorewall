@@ -2,7 +2,7 @@
 
 define shorewall::policy (
   String $source,
-  String $dest,
+  String $destination,
   String $action,
   String $order     = '50',
   String $log_level = '-',
@@ -14,18 +14,18 @@ define shorewall::policy (
     validate_re($order, ['^\d+$'], "Valid values for $order must be an integer.")
 
     if (($protocol == 'ipv4' or $protocol == 'all') and $::shorewall::ipv4) {
-      concat::fragment { "policy-ipv4-${action}-${source}-to-${dest}":
+      concat::fragment { "policy-ipv4-${action}-${source}-to-${destination}":
         order   => $order,
         target  => '/etc/shorewall/policy',
-        content => "${source} ${dest} ${action} ${log_level}\n",
+        content => "${source} ${destination} ${action} ${log_level}\n",
       }
     }
 
     if (($protocol == 'ipv6' or $protocol == 'all') and $::shorewall::ipv6) {
-      concat::fragment { "policy-ipv6-${action}-${source}-to-${dest}":
+      concat::fragment { "policy-ipv6-${action}-${source}-to-${destination}":
         order   => $order,
         target  => '/etc/shorewall6/policy',
-        content => "${source} ${dest} ${action} ${log_level}\n",
+        content => "${source} ${destination} ${action} ${log_level}\n",
       }
     }
   } else {
