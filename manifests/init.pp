@@ -218,91 +218,6 @@ class shorewall (
       }
     }
 
-    if ($default_policy != '') {
-      shorewall::policy { 'policy-default':
-        source => 'all',
-        dest   => 'all',
-        action => $default_policy,
-        order  => '99',
-        ipv4   => true,
-        ipv6   => false,
-      }
-    }
-
-    each($interfaces) |Shorewall::TypeInterfaceInternal $item| {
-      if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all')
-      {
-        shorewall::iface { "iface-ipv4-${item['interface']}":
-          interface => $item['interface'],
-          zone      => $item['zone'],
-          proto     => 'ipv4',
-          options   => $item['options'],
-        }
-      }
-    }
-
-    each($zones) |Shorewall::TypeZoneInternal $item| {
-      if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all') {
-        shorewall::zone { "zone-ipv4-${item['zone']}":
-          zone => $item['zone'],
-          type => 'ipv4',
-        }
-
-        if ($zones_have_hosts and is_a($item, Shorewall::TypeZoneHostInternal)) {
-          shorewall::host { "host-ipv4-${item['zone']}":
-            zone      => $item['zone'],
-            interface => $item['interface'],
-            addresses => $item['address'],
-            proto     => 'ipv4',
-          }
-        }
-      }
-    }
-
-    each($policies) |Integer $n, Shorewall::TypePolicyInternal $item| {
-      $policy_ipv4_order = 10 + $n
-      if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all') {
-        shorewall::policy { "policy-ipv4-${item['source']}-${item['destination']}":
-          source    => $item['source'],
-          dest      => $item['destination'],
-          action    => $item['action'],
-          log_level => $item['log_level'],
-          ipv4      => true,
-          ipv6      => false,
-          order     => String($policy_ipv4_order),
-        }
-      }
-    }
-
-    each($rules) |Integer $n, Shorewall::TypeRuleInternal $item| {
-      $rule_ipv4_order = 10 + $n
-      if ($item['protocol'] == 'ipv4' or $item['protocol'] == 'all') {
-        if is_a($item, Shorewall::TypeRuleAplicationInternal) {
-          shorewall::rule { "rule-ipv4-${item['source']}-${item['destination']}-${item['application']}":
-            source       => $item['source'],
-            dest         => $item['destination'],
-            application  => $item['application'],
-            action       => $item['action'],
-            ipv4         => true,
-            ipv6         => false,
-            order        => String($rule_ipv4_order),
-          }
-        }
-        elsif is_a($item, Shorewall::TypeRulePortInternal) {
-          shorewall::rule { "rule-ipv4-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
-            source => $item['source'],
-            dest   => $item['destination'],
-            proto  => $item['proto'],
-            port   => $item['port'],
-            action => $item['action'],
-            ipv4   => true,
-            ipv6   => false,
-            order  => String($rule_ipv4_order),
-          }
-        }
-      }
-    }
-
     if $manage_service
     {
       service { 'shorewall':
@@ -452,91 +367,6 @@ class shorewall (
       content => "# This file is managed by puppet\n# Changes will be lost\n",
     }
 
-    if ($default_policy != '') {
-      shorewall::policy { 'policy6-default':
-        source => 'all',
-        dest   => 'all',
-        action => $default_policy,
-        order  => '99',
-        ipv4   => false,
-        ipv6   => true,
-      }
-    }
-
-    each($interfaces) |Shorewall::TypeInterfaceInternal $item| {
-      if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all')
-      {
-        shorewall::iface { "iface-ipv6-${item['interface']}":
-          interface => $item['interface'],
-          zone      => $item['zone'],
-          proto     => 'ipv6',
-          options   => $item['options'],
-        }
-      }
-    }
-
-    each($zones) |Shorewall::TypeZoneInternal $item| {
-      if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all') {
-        shorewall::zone { "zone-ipv6-${item['zone']}":
-          zone => $item['zone'],
-          type => 'ipv6',
-        }
-
-        if ($zones_have_hosts and is_a($item, Shorewall::TypeZoneHostInternal)) {
-          shorewall::host { "host-ipv6-${item['zone']}":
-            zone      => $item['zone'],
-            interface => $item['interface'],
-            addresses => $item['address'],
-            proto     => 'ipv6',
-          }
-        }
-      }
-    }
-
-    each($policies) |Integer $n, Shorewall::TypePolicyInternal $item| {
-      $policy_ipv6_order = 10 + $n
-      if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all') {
-        shorewall::policy { "policy-ipv6-${item['source']}-${item['destination']}":
-          source    => $item['source'],
-          dest      => $item['destination'],
-          action    => $item['action'],
-          log_level => $item['log_level'],
-          ipv4      => false,
-          ipv6      => true,
-          order     => String($policy_ipv6_order),
-        }
-      }
-    }
-
-    each($rules) |Integer $n, Shorewall::TypeRuleInternal $item| {
-      $rule_ipv6_order = 10 + $n
-      if ($item['protocol'] == 'ipv6' or $item['protocol'] == 'all') {
-        if is_a($item, Shorewall::TypeRuleAplicationInternal) {
-          shorewall::rule { "rule-ipv6-${item['source']}-${item['destination']}-${item['application']}":
-            source       => $item['source'],
-            dest         => $item['destination'],
-            application  => $item['application'],
-            action       => $item['action'],
-            ipv4         => false,
-            ipv6         => true,
-            order        => String($rule_ipv6_order),
-          }
-        }
-        elsif is_a($item, Shorewall::TypeRulePortInternal) {
-          shorewall::rule { "rule-ipv6-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
-            source => $item['source'],
-            dest   => $item['destination'],
-            proto  => $item['proto'],
-            port   => $item['port'],
-            action => $item['action'],
-            ipv4   => false,
-            ipv6   => true,
-            order  => String($rule_ipv6_order),
-          }
-        }
-      }
-    }
-
     if $manage_service
     {
       service { 'shorewall6':
@@ -574,6 +404,64 @@ class shorewall (
     each($option) |$item| {
       shorewall::config { $item[0]:
         value => $item[1],
+      }
+    }
+  }
+
+  each($interfaces) |Shorewall::TypeInterfaceInternal $item| {
+    shorewall::interface { "iface-${item['protocol']}-${item['interface']}":
+      * => $item,
+    }
+  }
+
+  if ($default_policy != '') {
+    shorewall::policy { 'policy-all-default':
+      source   => 'all',
+      dest     => 'all',
+      action   => $default_policy,
+      order    => '99',
+      protocol => 'all',
+    }
+  }
+
+  each($policies) |Integer $n, Shorewall::TypePolicyInternal $item| {
+    $policy_order = 10 + $n
+    shorewall::policy { "policy-${item['protocol']}-${item['source']}-${item['destination']}":
+      *     => $item,
+      order => String($policy_order),
+    }
+  }
+
+
+  each($zones) |Shorewall::TypeZoneInternal $item| {
+    shorewall::zone { "zone-${item['protocol']}-${item['zone']}":
+      zone => $item['zone'],
+      protocol  => $item['protocol'],
+    }
+
+    if is_a($item, Shorewall::TypeZoneHostInternal) {
+      shorewall::host { "host-${item['protocol']}-${item['zone']}":
+        zone      => $item['zone'],
+        interface => $item['interface'],
+        addresses => $item['address'],
+        protocol  => $item['protocol'],
+      }
+    }
+  }
+
+  each($rules) |Integer $n, Shorewall::TypeRuleInternal $item| {
+    $rule_order = 10 + $n
+
+    if is_a($item, Shorewall::TypeRuleAplicationInternal) {
+      shorewall::rule { "rule-${item['protocol']}-${item['source']}-${item['destination']}-${item['application']}":
+        *     => $item,
+        order => String($rule_order),
+      }
+    }
+    elsif is_a($item, Shorewall::TypeRulePortInternal) {
+      shorewall::rule { "rule-${item['protocol']}-${item['source']}-${item['destination']}-${item['proto']}-${item['port']}":
+        *     => $item,
+        order => String($rule_order),
       }
     }
   }

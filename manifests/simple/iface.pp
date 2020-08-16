@@ -2,7 +2,7 @@
 
 define shorewall::simple::iface {
     if $::shorewall::simple::ipv4 {
-        shorewall::iface { "iface-${name}-ipv4":
+        shorewall::interface { "iface-${name}-ipv4":
             interface => $name,
             proto     => 'ipv4',
             options   => [ 'tcpflags', 'nosmurfs', 'routefilter', 'dhcp', 'optional' ],
@@ -11,7 +11,7 @@ define shorewall::simple::iface {
     }
 
     if $::shorewall::simple::ipv6 {
-        shorewall::iface { "iface-${name}-ipv6":
+        shorewall::interface { "iface-${name}-ipv6":
             interface => $name,
             proto     => 'ipv6',
             options   => [ 'tcpflags', 'nosmurfs', 'routefilter', 'dhcp', 'optional' ],
