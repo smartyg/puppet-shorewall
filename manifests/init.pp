@@ -71,7 +71,8 @@ class shorewall (
       '/etc/shorewall/hosts',
       "/etc/shorewall/${mangle_filename}",
       '/etc/shorewall/conntrack',
-      '/etc/shorewall/stoppedrules'
+      '/etc/shorewall/stoppedrules',
+      '/etc/shorewall/snat',
     ]:
       mode   => '0644',
       before => Anchor['shorewall'],
@@ -186,6 +187,13 @@ class shorewall (
       target  => '/etc/shorewall/stoppedrules',
       content => "# This file is managed by puppet\n# Changes will be lost\n",
     }
+
+    # ipv4 snat
+    concat::fragment { 'snat-preamble':
+		order   => '00',
+		target  => '/etc/shorewall/snat',
+		content => "# This file is managed by puppet\n# Changes will be lost\n",
+	}
 
     if $traffic_control {
       concat { [
