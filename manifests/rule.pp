@@ -36,7 +36,7 @@ define shorewall::rule (
       }
     }
 
-    if (($protocol == 'ipv4' or $protocol == 'all') and $::shorewall::ipv4) {
+    if (($protocol == 'ipv6' or $protocol == 'all') and $::shorewall::ipv6) {
       concat::fragment { "rule-ipv6-${name}":
         order   => $order,
         target  => '/etc/shorewall6/rules',

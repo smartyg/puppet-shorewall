@@ -32,7 +32,7 @@ define shorewall::interface (
         }
       }
     }
-    if (($protocol == 'ipv4' or $protocol == 'all') and $::shorewall::ipv4) {
+    if (($protocol == 'ipv6' or $protocol == 'all') and $::shorewall::ipv6) {
       concat::fragment { "shorewall-iface-ipv6-${name}":
         order   => '50',
         target  => '/etc/shorewall6/interfaces',
