@@ -22,7 +22,7 @@ define shorewall::snat (
 			concat::fragment { "snat-${name}":
 				order   => $order,
 				target  => '/etc/shorewall/snat',
-				content => inline_template("<%= @action %> <%= @source.empty? ? '' : @source %> <%= @destination %> <%= @proto.empty? ? '' : @proto %> <%= @dport.empty? ? '' : @dport %> <%= @ipsec.empty? ? '' : @ipsec %> <%= @mark.empty? ? '' : @mark %> <%= @user.empty? ? '' : @user %> <%= @switch.empty? ? '' : @switch %> <%= @origdest.empty? ? '' : @origdest %> <%= @probability.empty? ? '' : @probability %>"),
+				content => inline_template("<%= @action %> <%= empty(@source) ? '' : @source %> <%= @destination %> <%= empty(@proto) ? '' : @proto %> <%= empty(@dport) ? '' : @dport %> <%= empty(@ipsec) ? '' : @ipsec %> <%= empty(@mark) ? '' : @mark %> <%= empty(@user) ? '' : @user %> <%= empty(@switch) ? '' : @switch %> <%= empty(@origdest) ? '' : @origdest %> <%= empty(@probability) ? '' : @probability %>"),
 			}
 		}
 
