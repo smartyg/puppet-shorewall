@@ -267,6 +267,7 @@ class shorewall (
       '/etc/shorewall6/routestopped',
       '/etc/shorewall6/conntrack',
       '/etc/shorewall6/stoppedrules',
+      '/etc/shorewall6/snat',
     ]:
       mode   => '0644',
       before => Anchor['shorewall6'],
@@ -358,6 +359,13 @@ class shorewall (
     concat::fragment { 'routestopped6-preamble':
       order   => '00',
       target  => '/etc/shorewall6/routestopped',
+      content => "# This file is managed by puppet\n# Changes will be lost\n",
+    }
+
+    # ipv6 snat
+    concat::fragment { 'snat6-preamble':
+      order   => '00',
+      target  => '/etc/shorewall6/snat',
       content => "# This file is managed by puppet\n# Changes will be lost\n",
     }
 
