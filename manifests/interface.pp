@@ -38,6 +38,14 @@ define shorewall::interface (
         target  => '/etc/shorewall6/interfaces',
         content => template('shorewall/iface.erb'),
       }
+
+      if $::shorewall::traffic_control and $out_bandwidth {
+		  concat::fragment { "shorewall-tciface-ipv6-${name}":
+		  order   => '50',
+		  target  => '/etc/shorewall6/tcinterfaces',
+		  content => "${name} ${type} ${in_bandwidth} ${out_bandwidth}\n",
+		  }
+	  }
     }
   } else {
     fail('Class shorewall must be declared before this resource can be used')

@@ -8,6 +8,7 @@ class shorewall (
   String $default_policy                       = 'REJECT',
   Boolean $ip_forwarding                       = false,
   Boolean $traffic_control                     = false,
+  String $traffic_control_priomap              = '',
   String $maclist_ttl                          = '',
   String $maclist_disposition                  = 'REJECT',
   Boolean $log_martians                        = true,
@@ -383,6 +384,37 @@ class shorewall (
       content => "# This file is managed by puppet\n# Changes will be lost\n",
     }
 
+    if $traffic_control {
+		concat { [
+			'/etc/shorewall6/tcinterfaces',
+			'/etc/shorewall6/tcpri',
+		]:
+			mode   => '0644',
+			notify => Service['shorewall'],
+		}
+
+		# ipv4 tc interfaces
+		concat::fragment { 'tcinterfaces6-preamble':
+			order   => '00',
+			target  => '/etc/shorewall6/tcinterfaces',
+			content => "# This file is managed by puppet\n# Changes will be lost\n",
+		}
+
+		# ipv4 tc priorities
+		concat::fragment { 'tcpri6-preamble':
+			order   => '00',
+			target  => '/etc/shorewall6/tcpri',
+			content => "# This file is managed by puppet\n# Changes will be lost\n",
+		}
+	} else {
+		file { [
+			'/etc/shorewall6/tcinterfaces',
+			'/etc/shorewall6/tcpri',
+		]:
+		ensure => absent,
+		}
+	}
+
     if $manage_service
     {
       service { 'shorewall6':
@@ -410,6 +442,11 @@ class shorewall (
   }
   shorewall::config { 'TC_ENABLED':
     value => $traffic_control ? { true => "Simple", false => "Internal" },
+  }
+  if $traffic_control == true and $traffic_control_priomap != '' {
+	shorewall::config { 'TC_PRIOMAP':
+		value => $traffic_control_priomap,
+	}
   }
   shorewall::config { 'ROUTE_FILTER':
     value => $route_filter ? { true => 'Yes', false => 'No', 'keep' => 'Keep' },
