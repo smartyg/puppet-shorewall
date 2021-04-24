@@ -12,7 +12,7 @@ define shorewall::tcpri (
 		include shorewall
 
 		if (($protocol == 'ipv4' or $protocol == 'all') and $::shorewall::ipv4) {
-			if $::shorewall::traffic_control and $out_bandwidth {
+			if $::shorewall::traffic_control {
 				concat::fragment { "shorewall-tcpri-ipv4-${band}-${proto}-${port}-${address}-${interface}":
 					order   => '50',
 					target  => '/etc/shorewall/tcpri',
@@ -21,7 +21,7 @@ define shorewall::tcpri (
 			}
 		}
 		if (($protocol == 'ipv6' or $protocol == 'all') and $::shorewall::ipv6) {
-			if $::shorewall::traffic_control and $out_bandwidth {
+			if $::shorewall::traffic_control {
 				concat::fragment { "shorewall-tcpri-ipv6-${band}-${proto}-${port}-${address}-${interface}":
 					order   => '50',
 					target  => '/etc/shorewall6/tcpri',
