@@ -16,7 +16,7 @@ define shorewall::tcpri (
 				concat::fragment { "shorewall-tcpri-ipv4-${band}-${proto}-${port}-${address}-${interface}":
 					order   => '50',
 					target  => '/etc/shorewall/tcpri',
-					content => "${band} ${proto} ${port} ${adress} ${interface}\n",
+					content => "${band} ${proto} ${port} ${address} ${interface}\n",
 				}
 			}
 		}
@@ -25,7 +25,7 @@ define shorewall::tcpri (
 				concat::fragment { "shorewall-tcpri-ipv6-${band}-${proto}-${port}-${address}-${interface}":
 					order   => '50',
 					target  => '/etc/shorewall6/tcpri',
-					content => "${band} ${proto} ${port} ${adress} ${interface}\n",
+					content => "${band} ${proto} ${port} ${address} ${interface}\n",
 				}
 			}
 		}
